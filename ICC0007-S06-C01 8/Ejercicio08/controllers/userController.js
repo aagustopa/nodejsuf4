@@ -15,8 +15,23 @@ module.exports.getAll = async function(req, res) {
     res.status(response.status).send(response);
 }
 
-module.exports.create = function(req, res) {
+module.exports.create = async function(req, res) {
     const response = { status: 500, msg: 'Server error' };
-    response.msg = req.body;
+    try {
+        const data = {
+            name: req.body.name,
+            job: req.body.job
+        }
+        const responseFromService = await userService.createUser(data);
+        if (responseFromService.status) {
+            response.body = responseFromService.result;
+            response.msg = `User created succesfully`;
+            response.data = responseFromService.msg;
+            response.status = 201;
+        }
+    } catch (error) {
+        response.error = error;
+        console.log(`ERROR-userController-create: ${error}`);
+    }
     res.status(response.status).send(response);
 }

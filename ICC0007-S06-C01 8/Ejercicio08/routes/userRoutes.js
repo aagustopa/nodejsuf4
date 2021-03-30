@@ -9,4 +9,8 @@ router.get('/',
     joiSchemaValidation.validate(userSchemas.getAll, 'query'),
     userController.getAll);
 
+router.post('/create',
+    joiSchemaValidation.validate(userSchemas.createUser, 'body'),
+    userController.create);
+
 module.exports = router;
