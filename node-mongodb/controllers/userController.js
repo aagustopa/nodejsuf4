@@ -1,4 +1,4 @@
-const userService = require('../services/userService');
+const userService = require('../services/userServices');
 
 module.exports.getAll = async function(req, res) {
     const response = { status: 500, msg: 'Server error' };
@@ -18,22 +18,18 @@ module.exports.getAll = async function(req, res) {
 module.exports.create = async function(req, res) {
     const response = { status: 500, msg: 'Server error' };
     try {
-        // const data = req.body;
-        const data = {
-            name: req.body.name,
-            job: req.body.job
-        }
-        const responseFromService = await userService.createUser(data);
+        const data = req.body;
+        const responseFromService = await userService.create(data);
         if (responseFromService.status) {
-            response.body = responseFromService.result;
-            response.msg = `User created succesfully`;
-            response.data = responseFromService.msg;
-            // response.data = data;
             response.status = 201;
+            response.msg = 'User created succesfully';
+            response.body = responseFromService.result;
+        } else {
+            response.msg = responseFromService.error;
         }
-    } catch (error) {
-        response.error = error;
-        console.log(`ERROR-userController-create: ${error}`);
+    } catch (err) {
+        response.msg = err;
+        console.log(`ERROR-userController-create ${err}`);
     }
     res.status(response.status).send(response);
 }
