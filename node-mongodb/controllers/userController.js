@@ -33,3 +33,25 @@ module.exports.create = async function(req, res) {
     }
     res.status(response.status).send(response);
 }
+
+module.exports.update = async function(req, res) {
+    const response = { status: 500, msg: 'Server error' };
+    try {
+        const user = req.body;
+        user.id = req.params.id;
+        const responseFromService = await userService.update(user);
+        if (responseFromService.status === 200) {
+            response.msg = 'User updated sucessfully';
+            response.body = responseFromService.result; //doc guardat
+        } else if (responseFromService.status === 404) {
+            response.msg = 'User not found'
+        } else {
+            response.msg = responseFromService.error;
+        }
+        response.status = responseFromService.status;
+    } catch (err) {
+        response.msg = err;
+        console.log(`ERROR-userController-update ${err}`);
+    }
+    res.status(response.status).send(response);
+}

@@ -9,3 +9,25 @@ module.exports.save = async(obj) => {
         console.log(`ERROR-crudRepository-save ${error}`)
     }
 }
+
+module.exports.findOneAndUpdate = async(data) => {
+    const response = { status: 500 };
+    try {
+        const doc = await data.model.findOneAndUpdate(
+            data.findQuery,
+            data.updateQuery, {
+                new: true,
+                projection: data.projection,
+                useFindAndModify: false
+            });
+        if (doc) {
+            response.status = 200;
+            response.result = doc;
+        } else {
+            response.status = 404;
+        }
+    } catch (error) {
+        response.error = error;
+        console.log(`ERROR-crudRepository-findOneAndUpdate ${error}`)
+    }
+}

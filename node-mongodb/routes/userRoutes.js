@@ -13,4 +13,9 @@ router.post('/create',
     joiSchemaValidation.validate(userSchema.create, 'body'),
     userController.create);
 
+router.put('/update/:id',
+    joiSchemaValidation.validate(userSchema.id, 'params'),
+    joiSchemaValidation.validate(userSchema.update, 'body'),
+    userController.update);
+
 module.exports = router;
