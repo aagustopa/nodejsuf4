@@ -1,3 +1,20 @@
+module.exports.findById = async(data) => {
+    const response = { status: 500 };
+    try {
+        const doc = await data.model.findById(data._id, data.projection);
+        if (doc) {
+            response.status = 200;
+            response.result = doc;
+        } else {
+            response.status = 404;
+        }
+    } catch (error) {
+        response.error = error;
+        console.log(`ERROR-crudRepository-findById ${error}`);
+    }
+    return response;
+}
+
 module.exports.save = async(obj) => {
     const response = { status: false };
     try {
@@ -8,17 +25,35 @@ module.exports.save = async(obj) => {
         response.error = error;
         console.log(`ERROR-crudRepository-save ${error}`)
     }
+    return response;
 }
+
 
 module.exports.findOneAndUpdate = async(data) => {
     const response = { status: 500 };
     try {
         const doc = await data.model.findOneAndUpdate(
             data.findQuery,
-            data.updateQuery, {
-                new: true,
-                projection: data.projection,
-                useFindAndModify: false
+            data.updateQuery, { new: true, projection: data.projection, useFindAndModify: false });
+        if (doc) {
+            response.status = 200;
+            response.result = doc;
+        } else {
+            response.status = 404;
+        }
+    } catch (error) {
+        response.error = error;
+        console.log(`ERROR-crudRepository-findOneAndUpdate: ${error}`);
+    }
+    return response;
+};
+
+module.exports.findOneAndDelete = async(data) => {
+    const response = { status: 500 };
+    try {
+        const doc = await data.model.findOneAndDelete(
+            data.findQuery, {
+                projection: data.projection
             });
         if (doc) {
             response.status = 200;
@@ -28,6 +63,7 @@ module.exports.findOneAndUpdate = async(data) => {
         }
     } catch (error) {
         response.error = error;
-        console.log(`ERROR-crudRepository-findOneAndUpdate ${error}`)
+        console.log(`ERROR-crudRepository-findOneAndDelete ${error}`);
     }
+    return response;
 }

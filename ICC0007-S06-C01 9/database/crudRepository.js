@@ -8,4 +8,5 @@ module.exports.save = async(obj) => {
         response.error = error;
         console.log(`ERROR-crudRepository-save ${error}`)
     }
+    return response;
 }
