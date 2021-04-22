@@ -3,8 +3,9 @@ Joi.objectId = require('joi-objectid')(Joi);
 
 module.exports = {
     getAll: Joi.object({
-        page: Joi.number().integer().min(1).max(2)
-    }),
+        skip: Joi.number().integer().optional(),
+        limit: Joi.number().integer().optional(),
+    }).and('skip', 'limit'),
     create: Joi.object({
         email: Joi.string().email().required(),
         username: Joi.string().alphanum().required(),

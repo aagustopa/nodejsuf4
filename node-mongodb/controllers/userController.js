@@ -25,10 +25,13 @@ module.exports.getById = async function(req, res) {
 module.exports.getAll = async function(req, res) {
     const response = { status: 500, msg: 'Server error' };
     try {
-        const page = req.query.page || 2; //si no hay pagina espicificada será pagina 2 por defecto
-        const resFromService = await userService.getAll(page);
-        if (resFromService.status) {
-            response.status = resFromService.status;
+        const data = {
+            skip: parseInt(req.query.skip, 10),
+            limit: parseInt(req.query.limit, 10)
+        }
+        const resFromService = await userService.getAll(data);
+        if (resFromService.status === 200) {
+            response.body = resFromService.result;
             response.msg = resFromService.msg;
         }
     } catch (err) {
