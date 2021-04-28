@@ -3,6 +3,7 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const joiSchemaValidation = require('../middlewares/joiSchemaValidation');
+const tokenValidation = require('../middlewares/tokenValidation');
 const userSchema = require('../models/joi/userSchema');
 
 router.get('/',
@@ -18,6 +19,8 @@ router.post('/create',
     userController.create);
 
 router.put('/update/:id',
+    tokenValidation.validate,
+    tokenValidation.checkId,
     joiSchemaValidation.validate(userSchema.id, 'params'),
     joiSchemaValidation.validate(userSchema.update, 'body'),
     userController.update);

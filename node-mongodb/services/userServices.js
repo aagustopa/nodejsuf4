@@ -110,5 +110,25 @@ module.exports = {
             console.log(`ERROR-userService-delete ${error}`);
         }
         return response;
-    }
+    },
+    findOne: async(dataFromController) => {
+        const response = { status: false };
+        try {
+            const data = {
+                findQuery: dataFromController,
+                model: Drone,
+                projection: { __v: false }
+            };
+
+            const responseFromDB = await crudRepository.findOne(data);
+            if (responseFromDB.status === 200) {
+                response.result = responseFromDB.result;
+            }
+            response.status = responseFromDB.status;
+        } catch (error) {
+            response.error = error;
+            console.log(`ERROR-userService-findOne: ${error}`);
+        }
+        return response;
+    },
 }

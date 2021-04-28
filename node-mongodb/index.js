@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 connect.createConnection();
 
 app.use('/api/v1/users', require('./routes/userRoutes'));
+app.use('/api/v1/auth', require('./routes/authRoutes'));
 
 app.listen(process.env.PORT, function() {
     console.log(`Example app listening on port ${process.env.PORT}`)
