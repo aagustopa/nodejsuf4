@@ -5,10 +5,7 @@ const movieSchema = mongoose.Schema({
     sinopsis: String,
     director: String,
     releasedDate: Date,
-    actores: {
-        firstName: String,
-        lastName: String
-    }
+    actores: Array
 })
 
 module.exports = mongoose.model('Movie', movieSchema);
